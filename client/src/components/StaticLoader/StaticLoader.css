@@ -1,0 +1,44 @@
+:root {
+    --animation-time: 1s;
+    --animation-time-double: 2s;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.loader {
+    font-size: 0.7rem;
+}
+
+.static-dot {
+    position: relative;
+    background-color: rgb(255, 197, 62);/* Your specified color */
+    width: 10em;
+    height: 10em;
+    z-index: 5;
+    border-radius: 50%;
+    margin: 0 auto; 
+    /* overflow: hidden; */
+}
+
+.eyes {
+    position: absolute;
+    top: 3em;
+    left: 3em;
+    background-color: rgb(42, 25, 15);
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    box-shadow: 3em 0 0 rgb(42, 25, 15);
+}
+
+.static-shadow {
+    width: 10em;
+    height: 4em;
+    border-radius: 50%;
+    background-color: white;
+    margin-top: -2em;
+}

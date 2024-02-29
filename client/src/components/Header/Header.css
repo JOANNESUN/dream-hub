@@ -1,0 +1,24 @@
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #202124;
+    font-size: 14px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 1px solid #f7f7f0;
+    height:4em;
+    padding-left: 5em;
+  }
+  
+  .header div:nth-child(1) {
+    color:rgb(247, 247, 240);
+    font-weight: 700;
+    margin-left:2em;
+  }
+
+  .header img{
+    width:6em;
+    margin-left: 2em;
+  }

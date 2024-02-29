@@ -1,0 +1,33 @@
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-family: "Oxygen", sans-serif;
+    font-weight: 600;
+    color: white;
+  }
+  
+  .typewriter {
+      width: 5ch;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #fcfafa;
+      animation: cursor 1s step-start infinite, 
+      text 4s steps(20) alternate infinite;
+  }
+  
+  @keyframes cursor {
+      0%, 100% { 
+      border-color: #fdfbfb; 
+    }
+  }
+  
+  @keyframes text {
+      0% { 
+      width: 0; 
+    }
+      100% { 
+      width: 10ch; 
+    }
+  }

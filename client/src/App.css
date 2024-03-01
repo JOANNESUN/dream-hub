@@ -39,7 +39,7 @@ body {
   background-color: #b8e1de;
   flex: 1;
   padding: 20px; /* Space inside the box */
-  margin: 2em 2em 6em 2em; /* Space outside the box */
+  margin: 1em 2em 6em 2em; /* Space outside the box */
   border-radius: 10%;
   position: relative; 
   display: flex;
@@ -61,7 +61,7 @@ body {
 
 .inputField{
   width:20em;
-  padding: 2em;
+  padding: 1em 2em 2em 2em;
   margin: 2em;
 }
 

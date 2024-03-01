@@ -74,6 +74,15 @@
   outline: 0;
 }
 
+.clear-response {
+  background-color: rgb(247, 253, 129);/* Your desired background color for the button */;
+  /* Add any other styles you need for the button when it's for clearing the response */
+}
+
+.clear-response:hover {
+  background: rgb(245, 251, 207);
+}
+
 @media (max-width: 1068px) {
   .video-game-button {
     font-size: 16px; /* Reduce font size */

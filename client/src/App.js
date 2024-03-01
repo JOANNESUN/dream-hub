@@ -4,14 +4,12 @@ import "./App.css";
 import "./Button.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Loader from "./components/Loader/Loader";
-import StaticLoader from "./components/StaticLoader/StaticLoader";
 import DreamInputField from "./components/MainComponent/DreamInputField";
 import DreamAnalysis from "./components/MainComponent/DreamAnalysis";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import DreamTable from "./components/DreamTable/DreamTable";
 
 function App() {
-  const [inputQuery, setInputQuery] = useState("");
-  const [response, setResponse] = useState("");
   const [loader, setLoader] = useState(false);
   const [inputData, setInputData] = useState("");
   const [responseData, setResponseData] = useState("");
@@ -24,35 +22,48 @@ function App() {
     setResponseData(responseDataFromChild);
   }
 
-  function handleLoadingStatus(loadingStatus){
+  function handleLoadingStatus(loadingStatus) {
     setLoader(loadingStatus);
   }
 
-  useEffect(() => {
-    if (inputQuery === "") {
-      setLoader(false);
-      setResponse("");
-    }
-  }, [inputQuery]);
-
   return (
     <div>
-      <Header />
-      <div className="container">
-        <DreamInputField
-          handleUpdateInput={handleUpdateInput}
-          handleResponseData={handleResponseData}
-          handleLoadingStatus={handleLoadingStatus}
-        />
-        <div>
-          <DreamAnalysis
-            dataFromDreamInput={inputData}
-            dataFromDreamResponse={responseData}
-            loadingStatus={loader}
-          />
+      <BrowserRouter>
+        <Header />
+        <div className="container">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <DreamInputField
+                    handleUpdateInput={handleUpdateInput}
+                    handleResponseData={handleResponseData}
+                    handleLoadingStatus={handleLoadingStatus}
+                  />
+                  <div>
+                    <DreamAnalysis
+                      dataFromDreamInput={inputData}
+                      dataFromDreamResponse={responseData}
+                      loadingStatus={loader}
+                    />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/journal"
+              element={
+                <DreamTable
+                  dataFromDreamInput={inputData}
+                  dataFromDreamResponse={responseData}
+                />
+              }
+            />
+          </Routes>
         </div>
-      </div>
-      <Footer />
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }

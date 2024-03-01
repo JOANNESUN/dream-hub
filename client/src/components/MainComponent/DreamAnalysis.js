@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import Loader from "../Loader/Loader";
 import StaticLoader from "../StaticLoader/StaticLoader";
+import { useNavigate } from 'react-router-dom';
 
 function DreamAnalysis({ dataFromDreamInput, dataFromDreamResponse, loadingStatus }) {
     const [responseData, setResponseData] = useState(dataFromDreamResponse);
     const [inputData, setInputData] = useState(dataFromDreamInput);
     const [loaderRefresh, setLoaderRefresh] = useState(false);
-
+    let navigate = useNavigate();
 
 
     useEffect(() => {
@@ -22,7 +23,7 @@ function DreamAnalysis({ dataFromDreamInput, dataFromDreamResponse, loadingStatu
       }, [dataFromDreamInput]);
 
   function handleSave() {
-    console.log("hi");
+    navigate('/journal')
   }
 
   return (

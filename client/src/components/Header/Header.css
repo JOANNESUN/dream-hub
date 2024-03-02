@@ -10,6 +10,7 @@
     border-bottom: 1px solid #f7f7f0;
     height:4em;
     padding-left: 5em;
+    z-index:9999;
   }
   
   .header div:nth-child(1) {

@@ -93,3 +93,34 @@
     50% { transform: scaleY(1) translateY(0); opacity: 1 }
     100% { transform: scaleY(1) translateY(0); opacity: 1 }
 }
+
+
+@media (max-width: 768px) {
+    .loader {
+        font-size: 0.5rem; /* Adjusted for smaller screens */
+    }
+
+    .dot, .loader--2 .face, .shadow {
+        animation-name: none; /* Disables animation */
+    }
+
+    /* If you want to keep the dot visible but static, adjust width and height back to a visible size */
+    .dot {
+        width: 5em; /* Adjust size as needed for static, smaller dot */
+        height: 5em; /* Adjust size as needed for static, smaller dot */
+    }
+
+    .eyes {
+        top: 1.5em; /* Adjust position for static, smaller dot */
+        left: 1.5em; /* Adjust position for static, smaller dot */
+        height: 0.5em; /* Adjust size for smaller eyes */
+        width: 0.5em; /* Adjust size for smaller eyes */
+        box-shadow: 1.5em 0 0 rgb(42, 25, 15); /* Adjust shadow for smaller eyes */
+    }
+
+    .shadow {
+        width: 5em; /* Adjust size for static, smaller shadow */
+        height: 2em; /* Adjust size for static, smaller shadow */
+        margin-top: -1em; /* Adjust margin for smaller shadow */
+    }
+}

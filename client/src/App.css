@@ -1,14 +1,17 @@
 .container {
   display: flex;
+  flex: 1 0 auto;
   text-align: center;
   box-sizing: border-box;
   height: 100vh;
   background-color: #202124;
-  padding-top:5em;
+  padding: 5em 2em 5em 2em;
 }
 
 html,
 body {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   font-family: "Nanum Gothic", sans-serif;
   font-weight: 300;
@@ -39,7 +42,7 @@ body {
   background-color: #b8e1de;
   flex: 1;
   padding: 20px; /* Space inside the box */
-  margin: 1em 2em 6em 2em; /* Space outside the box */
+  margin-right:2em;
   border-radius: 10%;
   position: relative; 
   display: flex;
@@ -55,7 +58,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 1em 1em 6em 0em; 
+
   border-radius: 2%;
 }
 
@@ -88,8 +91,43 @@ body {
 }
 
 .interpretationField{
-  width:40em;
-  padding: 2em;
-  margin: -2em 2em 2em 2em;
+  width: 80%; /* Makes the field expand to fill its container */
+  padding: 2em 2em 2em 2em;
+  margin: -2em 4em 2em 4em;
   height: 20em;
+}
+
+/* Adjustments for tablets */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; 
+    justify-content: center; /* Center items horizontally */
+    align-items: center;
+  }
+
+  .container > form:nth-child(1), .container > div:nth-child(2) {
+    flex: none; /* Avoid using a fixed flex-grow value */
+    width: 90%; 
+    border-radius: 5px;
+    margin-right:0em;
+  }
+
+  .container > div:nth-child(2) {
+    margin-top:2em;
+    margin-right:0em;
+  }
+
+  .oxygenBold{
+    font-size: 1.5em;
+  }
+
+  .inputField{
+    width: 90%;
+  }
+
+  .interpretationField {
+    width: 90%;
+    margin-top:2em;
+    height: auto;
+  }
 }

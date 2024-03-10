@@ -2,6 +2,8 @@ const { OpenAI } = require("openai");
 require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
+const database = require('./database'); 
+const { formatDate } = require('./dateConverter'); 
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -13,9 +15,56 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.get("/api", (req, res) => {
-  res.json({ users: ["userOne", "userTwo", "userThree"] });
+app.post('/test', (req, res) => {
+  res.status(200).send('Test route is working');
 });
+
+app.get("/fetch-journal", async (req, res) => {
+  try {
+
+      const userId = req.query.user_id || 1; // Fallback to 1 if no user_id is specified
+      console.log("Received user_id:", userId);
+
+      const query = 'SELECT * FROM journal WHERE user_id = ? ORDER BY date DESC';
+      console.log("Executing query:", query, "with user_id:", userId);
+
+      // Use async/await for the promise-based query
+      const [results] = await database.query(query, [userId]);
+      const formattedResults = results.map(item => ({
+        ...item,
+        date: formatDate(item.date), // Use the imported formatDate function
+      }));
+
+      res.status(200).send(formattedResults);
+  } catch (error) {
+      console.error("Failed to fetch from database", error);
+      res.status(500).send('Error fetching data');
+  }
+});
+
+
+
+
+app.post ("/save-journal", async(req, res) =>{
+  const { user_id, date, dream, analysis } = req.body;
+ 
+    // The SQL query to insert data, adjust column names as per your table
+    const query = `
+    INSERT INTO journal (user_id, date, dream, analysis)
+    VALUES (?, ?, ?, ?)
+  `;
+
+    // Using the db.query method to insert data into the journal table
+    database.query(query, [user_id, date, dream, analysis], (error, results) => {
+      if (error) {
+        console.error("Failed to insert into database", error);
+        res.status(500).send('Error saving data');
+      } else {
+        console.log("Data inserted successfully", results);
+        res.status(201).send({ message: 'Data saved successfully', id: results.insertId });
+      }
+    });
+ });
 
 const systemMessage = {
   role: "system",

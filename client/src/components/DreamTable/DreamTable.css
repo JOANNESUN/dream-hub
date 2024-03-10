@@ -1,31 +1,27 @@
 .dream-table-container{
-    flex: 1;
-    padding: 20px; /* Space inside the box */
-    margin: 1em 2em 6em 2em; /* Space outside the box */
-    border-radius: 5px;
-    position: relative; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  background-color:#ffffff!important; 
     align-items: center;
+    max-height: 500px; /* Adjust based on your needs */
+    overflow-y: auto; /* Enables vertical scrolling */
+    width: 100%;
+    border-radius: 1em;
+    margin: 3em 2em 2em 2em;
   }
 
   .dream-table {
-    width: 90%;
     border-collapse: collapse;
-    margin: 25px 0;
     font-size: 0.9em;
     font-family: "Oxygen", sans-serif;
     min-width: 400px;
     background-color: #ffffff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
   }
   
   .dream-table thead tr {
     background-color: #b8e1de;
     color: #434343;
     text-align: center;
+    height: 4em;
   }
   
   .dream-table th,

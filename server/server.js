@@ -23,26 +23,20 @@ app.get("/fetch-journal", async (req, res) => {
   try {
 
       const userId = req.query.user_id || 1; // Fallback to 1 if no user_id is specified
-      console.log("Received user_id:", userId);
-
       const query = 'SELECT * FROM journal WHERE user_id = ? ORDER BY date DESC';
-      console.log("Executing query:", query, "with user_id:", userId);
 
       // Use async/await for the promise-based query
       const [results] = await database.query(query, [userId]);
       const formattedResults = results.map(item => ({
         ...item,
-        date: formatDate(item.date), // Use the imported formatDate function
+        date: formatDate(item.date),
       }));
 
       res.status(200).send(formattedResults);
   } catch (error) {
-      console.error("Failed to fetch from database", error);
       res.status(500).send('Error fetching data');
   }
 });
-
-
 
 
 app.post ("/save-journal", async(req, res) =>{

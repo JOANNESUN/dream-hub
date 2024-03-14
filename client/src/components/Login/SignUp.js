@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// in order to have a controlled form, needs to:
-// control form input with useState
-// need to add function to handle input
-// need to add function to handle submit
-// in handle submit, send req and receive data
 export default function SignUp(props) {
   const [showModal, setShowModal] = useState(true);
   const [formInput, setFormInput] = useState({
@@ -20,14 +15,11 @@ export default function SignUp(props) {
   const [submitted, setSubmitted] = useState(false);
 
   function handleChange(e) {
-    console.log(e.target.value);
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
   }
 
-  // Must contain at least one digit (0-9).
-  // Must contain at least one letter (a-z or A-Z).
+  // Must contain only letter (a-z or A-Z).
   // Must be between 8 and 20 characters long.
-
   function validateForm() {
     let isValid = true;
     const newErrors = {};
@@ -70,70 +62,93 @@ export default function SignUp(props) {
   function handleSubmit(e) {
     e.preventDefault();
     if (validateForm()) {
-      console.log("formInput valid", formInput);
-      setSubmitted(true);
-      toast.success("Success!", {
-        position: "top-center",
-        autoClose: 2000,
-      });
-    } else {
-      console.log("formInput invalid");
-      toast.error("Error!", {
-        position: "top-center",
-        autoClose: 2000,
-      });
+      const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/signup`;
+      fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(formInput),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setSubmitted(true);
+          toast.success("You have sign up successfully", {
+            position: "top-left",
+            autoClose: 3000,
+          });
+        })
+        .catch((error) => {
+          console.log("error:", error);
+          toast.error("Error!", {
+            position: "top-left",
+            autoClose: 3000,
+          });
+        });
     }
   }
 
   return (
     <>
-      <Modal show={showModal} onClose={props.closeModal}>
-        <form className="form-center-container" onSubmit={handleSubmit}>
-          <h2 style={{ padding: "1em" }}>Please Sign Up</h2>
-          <div className="mb-3">
-            <input
-              type="name"
-              name="name"
-              value={formInput.name}
-              className="form-control"
-              placeholder="Enter name"
-              onChange={handleChange}
-              required
-            />
-            {errors.name && <div className="error">{errors.name}</div>}
-          </div>
-          <div className="mb-3">
-            <input
-              type="email"
-              name="email"
-              value={formInput.email}
-              className="form-control"
-              placeholder="Enter email"
-              onChange={handleChange}
-              required
-            />
-            {errors.email && <div className="error">{errors.email}</div>}
-          </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              name="password"
-              value={formInput.password}
-              className="form-control"
-              placeholder="Enter password"
-              onChange={handleChange}
-              required
-            />
-            {errors.password && <div className="error">{errors.password}</div>}
-          </div>
-          <div className="d-grid">
-            <ToastContainer />
-            <button type="submit" className="video-game-button" style={{marginTop: "8px"}}>
-              Submit
-            </button>
-          </div>
-        </form>
-      </Modal>
+      {submitted ? (
+        <div>
+          {" "}
+          <ToastContainer style={{ marginTop: "3em" }} />
+        </div>
+      ) : (
+        <Modal show={showModal} onClose={props.closeModal}>
+          <form className="form-center-container" onSubmit={handleSubmit}>
+            <h2 style={{ padding: "1em" }}>Please Sign Up</h2>
+            <div className="mb-3">
+              <input
+                type="name"
+                name="name"
+                value={formInput.name}
+                className="form-control"
+                placeholder="Enter name"
+                onChange={handleChange}
+                required
+              />
+              {errors.name && <div className="error">{errors.name}</div>}
+            </div>
+            <div className="mb-3">
+              <input
+                type="email"
+                name="email"
+                value={formInput.email}
+                className="form-control"
+                placeholder="Enter email"
+                onChange={handleChange}
+                required
+              />
+              {errors.email && <div className="error">{errors.email}</div>}
+            </div>
+            <div className="mb-3">
+              <input
+                type="password"
+                name="password"
+                value={formInput.password}
+                className="form-control"
+                placeholder="Enter password"
+                onChange={handleChange}
+                required
+              />
+              {errors.password && (
+                <div className="error">{errors.password}</div>
+              )}
+            </div>
+            <div className="d-grid">
+              <button
+                type="submit"
+                className="video-game-button"
+                style={{ marginTop: "8px" }}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </Modal>
+      )}
     </>
   );
 }

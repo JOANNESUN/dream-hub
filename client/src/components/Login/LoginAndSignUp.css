@@ -1,0 +1,24 @@
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    box-sizing: border-box; 
+    margin-top: 1em;
+  }
+  
+  .form-control:focus {
+    z-index: 2;
+  }
+
+  .form-center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+.error{
+  color: red;
+  font-size: 12px;
+}

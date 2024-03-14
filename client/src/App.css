@@ -63,9 +63,16 @@ body {
 }
 
 .inputField{
-  width:20em;
+  width:25em;
+  min-height:8.5em;
   padding: 1em 2em 2em 2em;
   margin: 2em;
+}
+
+.inputField:focus{
+  border: 0 none #FFF;
+  overflow: hidden;
+  outline:none;
 }
 
 .errorMsg {
@@ -95,6 +102,11 @@ body {
   padding: 2em 2em 2em 2em;
   margin: -2em 4em 2em 4em;
   height: 20em;
+}
+
+.interpretationField:focus{
+  border: 0 none;
+  outline:none;
 }
 
 /* Adjustments for tablets */

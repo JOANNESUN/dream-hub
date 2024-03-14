@@ -4,8 +4,6 @@ import "./App.css";
 import "./Button.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Login from "./components/Login/Login";
-import SignUp from "./components/Login/SignUp";
 import DreamInputField from "./components/MainComponent/DreamInputField";
 import DreamAnalysis from "./components/MainComponent/DreamAnalysis";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -63,10 +61,6 @@ function App() {
               }
             />
           </Routes>
-          <Routes>
-              <Route path="/sign-in" element={<Login />} />
-              <Route path="/sign-up" element={<SignUp />} />
-            </Routes>
         </div>
         <Footer />
       </BrowserRouter>

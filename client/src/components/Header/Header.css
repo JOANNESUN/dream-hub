@@ -8,15 +8,20 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #f7f7f0;
-    height:4em;
+    height:5em;
     padding-left: 0 5em;
     z-index:9999;
   }
   
-  .header-left,
+  .header-left {
+    display: flex;
+    align-items: center;
+    margin-left: 3em;
+  }
   .header-right {
     display: flex;
     align-items: center;
+    margin-right: 3em;
   }
   
   .header-left ul {

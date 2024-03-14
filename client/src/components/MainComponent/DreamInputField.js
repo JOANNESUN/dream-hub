@@ -77,7 +77,7 @@ function DreamInputField({
             value={inputQuery}
             required
           />
-          <span className="wordCount">word counts: {wordCount}</span>
+          <span className="wordCount">length:5-30 letters, word counts: {wordCount}</span>
         </div>
         <p className="errorMsg">{errorMsg}</p>
         {/* <button

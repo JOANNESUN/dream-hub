@@ -8,8 +8,12 @@ function DreamTable() {
   const [responseData, setResponseData] = useState([]);
 
   useEffect(() => {
-    const url = `${process.env.REACT_APP_BACKEND_URL}/fetch-journal?user_id=1`;
-    fetch(url) // Adjust the user_id as needed
+    const url = `${process.env.REACT_APP_BACKEND_URL}/fetch-journal`;
+    const token = localStorage.getItem("token");
+    console.log("token", token);
+    fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched data:", data);
@@ -38,45 +42,39 @@ function DreamTable() {
     []
   );
 
-  console.log(`${process.env.REACT_APP_BACKEND_URL}/fetch-journal?user_id=1`);
-
   const data = useMemo(() => responseData, [responseData]);
-
-  console.log("table data", data);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
   return (
-      <div className="dream-table-container">
-        <table {...getTableProps()} className="dream-table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
+    <div className="dream-table-container">
+      <table {...getTableProps()} className="dream-table">
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
               </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

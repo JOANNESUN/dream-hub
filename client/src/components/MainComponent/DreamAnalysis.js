@@ -11,9 +11,7 @@ function DreamAnalysis({
 }) {
   const [responseData, setResponseData] = useState(dataFromDreamResponse);
   const [inputData, setInputData] = useState(dataFromDreamInput);
-  const [loaderRefresh, setLoaderRefresh] = useState(false);
   let navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState(getDate());
 
   useEffect(() => {
     // Update responseData when dataFromDreamResponse changes
@@ -29,38 +27,36 @@ function DreamAnalysis({
   }, [dataFromDreamInput]);
 
   function handleSave() {
-    const userId = 1; // Assuming a fixed user ID for demonstration
-    const dream = inputData; // Assuming `responseData` contains the dream description
+    const dream = inputData;
     const currentDate = new Date().toISOString().slice(0, 10);
     const analysis = responseData;
-
-    console.log("Posting:", {
-      user_id: userId,
-      date: currentDate,
-      dream: dream,
-      analysis: analysis,
-    });
-
+    const token = localStorage.getItem("token");
+    console.log(token)
     fetch(`${process.env.REACT_APP_BACKEND_URL}/save-journal`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        user_id: userId,
         date: currentDate,
         dream: dream,
         analysis: analysis,
       }),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
       .then((data) => {
         console.log(data);
+        navigate("/journal");
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-      navigate("/journal");
   }
 
   return (

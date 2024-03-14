@@ -55,6 +55,7 @@ export default function Login(props) {
       })
         .then((res) => res.json())
         .then((data) => {
+          localStorage.setItem('token', data.token);
           setSubmitted(true);
           toast.success("You have login successfully", {
             position: "top-left",

@@ -3,6 +3,7 @@ import "./DreamTable.css";
 import getDate from "../../helper/date";
 import { useTable } from "react-table";
 import { DreamTableLabel } from "./DreamTableLabel";
+import "../Logo/Logo.css";
 
 function DreamTable() {
   const [responseData, setResponseData] = useState([]);
@@ -48,32 +49,45 @@ function DreamTable() {
     useTable({ columns, data });
 
   return (
-    <div className="dream-table-container">
-      <table {...getTableProps()} className="dream-table">
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+    <div
+      style={{
+        background: rows.length < 0 ? "white" : "black",
+      }}
+      className="dream-table-container"
+    >
+      {rows.length > 0 ? (
+        <table {...getTableProps()} className="dream-table">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <div style={{color: "white" }}>
+          <h1>No Journal Yet</h1>
+        </div>
+      )}
     </div>
   );
 }

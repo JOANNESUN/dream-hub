@@ -2,8 +2,12 @@ const { OpenAI } = require("openai");
 require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
-const database = require('./database'); 
-const { formatDate } = require('./dateConverter'); 
+const database = require("./database");
+const { formatDate } = require("./dateConverter");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const jwtSecret = process.env.JWT_SECRET;
+const authenticateToken = require("./authenticationToken");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -15,50 +19,106 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.post('/test', (req, res) => {
-  res.status(200).send('Test route is working');
+app.post("/test", (req, res) => {
+  res.status(200).send("Test route is working");
 });
 
-app.get("/fetch-journal", async (req, res) => {
+app.post('/logout', (req, res) => {
+  res.status(200).json({ message: 'Logged out successfully',success: true });
+});
+
+
+app.post("/signup", async (req, res) => {
+  console.log(req.body);
+  const { name, email, password } = req.body;
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      const userId = req.query.user_id || 1; // Fallback to 1 if no user_id is specified
-      const query = 'SELECT * FROM journal WHERE user_id = ? ORDER BY date DESC';
+    const query = `
+    INSERT INTO user (username, email, password, createdAt, updatedAt)
+    VALUES (?, ?, ?, NOW(), NOW())
+  `;
 
-      // Use async/await for the promise-based query
-      const [results] = await database.query(query, [userId]);
-      const formattedResults = results.map(item => ({
-        ...item,
-        date: formatDate(item.date),
-      }));
-
-      res.status(200).send(formattedResults);
+    const [results] = await database.query(query, [
+      name,
+      email,
+      hashedPassword,
+    ]);
+    console.log("Signup success", results);
+    res
+      .status(201)
+      .send({ message: "Signup successful", userId: results.insertId, username: results.name });
   } catch (error) {
-      res.status(500).send('Error fetching data');
+    console.error("Failed to insert user in database", error);
+    res.status(500).send("Error signing up");
   }
 });
 
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const [rows] = await database.query("SELECT * FROM user WHERE email = ?", [
+      email,
+    ]);
+    const user = rows[0];
+    // No user found with that email
+    if (!user) {
+      return res.status(401).send("Invalid credentials"); 
+    }
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign({ userId: user.id }, jwtSecret);
+      res.json({ message: "Login successful", token: token, username:user.username });
+    } else {
+      res.status(401).send("Invalid credentials");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
 
-app.post ("/save-journal", async(req, res) =>{
-  const { user_id, date, dream, analysis } = req.body;
- 
-    // The SQL query to insert data, adjust column names as per your table
-    const query = `
+app.post("/save-journal", authenticateToken, async (req, res) => {
+  const { date, dream, analysis } = req.body;
+  const userId = req.user.userId;
+
+  const query = `
     INSERT INTO journal (user_id, date, dream, analysis)
     VALUES (?, ?, ?, ?)
   `;
 
-    // Using the db.query method to insert data into the journal table
-    database.query(query, [user_id, date, dream, analysis], (error, results) => {
-      if (error) {
-        console.error("Failed to insert into database", error);
-        res.status(500).send('Error saving data');
-      } else {
-        console.log("Data inserted successfully", results);
-        res.status(201).send({ message: 'Data saved successfully', id: results.insertId });
-      }
-    });
- });
+  try {
+    const [results] = await database.query(query, [
+      userId,
+      date,
+      dream,
+      analysis,
+    ]);
+    res
+      .status(201)
+      .send({ message: "Data saved successfully", id: results.insertId });
+  } catch (error) {
+    console.error("Failed to insert into database", error);
+    res.status(500).send("Error saving data");
+  }
+});
+
+app.get("/fetch-journal", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const query = "SELECT * FROM journal WHERE user_id = ? ORDER BY date DESC";
+
+    const [results] = await database.query(query, [userId]);
+    const formattedResults = results.map((item) => ({
+      ...item,
+      date: formatDate(item.date),
+    }));
+
+    res.status(200).send(formattedResults);
+  } catch (error) {
+    res.status(500).send("Error fetching data");
+  }
+});
 
 const systemMessage = {
   role: "system",

@@ -69,15 +69,17 @@ function DreamInputField({
           Share your dream here, and we'll unveil deeper meanings and insights
           hidden within.
         </h1>
+
         <div className="inputWrapper">
           <textarea
             className="inputField"
             ref={textAreaRef}
             onChange={handleInput}
             value={inputQuery}
+            placeholder="minimum 5 and max 30 characters..."
             required
           />
-          <span className="wordCount">length:5-30 letters, word counts: {wordCount}</span>
+          <span className="wordCount"> word counts: {wordCount}</span>
         </div>
         <p className="errorMsg">{errorMsg}</p>
         {/* <button

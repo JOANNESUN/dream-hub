@@ -94,7 +94,7 @@ body {
   position: absolute; /* Add this line */
   top: 0; /* Adjust as needed to move down from the top */
   right: 0;
-  margin-right:6em;
+  margin-right:3em;
 }
 
 .interpretationField{

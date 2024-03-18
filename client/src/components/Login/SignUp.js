@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,6 +13,11 @@ export default function SignUp(props) {
   });
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSignout, setIsSignout] = useState(false);
+
+  useEffect(()=>{
+    props.sendDataToParent(isSignout)
+  }, [isSignout])
 
   function handleChange(e) {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
@@ -73,6 +78,7 @@ export default function SignUp(props) {
         .then((res) => res.json())
         .then((data) => {
           setSubmitted(true);
+          setIsSignout(true);
           toast.success("You have sign up successfully", {
             position: "top-left",
             autoClose: 3000,
@@ -88,6 +94,7 @@ export default function SignUp(props) {
     }
   }
 
+
   return (
     <>
       {submitted ? (
@@ -97,7 +104,7 @@ export default function SignUp(props) {
         </div>
       ) : (
         <Modal show={showModal} onClose={props.closeModal}>
-          <form className="form-center-container" onSubmit={handleSubmit}>
+          <form className="form-center-container" onSubmit={handleSubmit} autoComplete="off">
             <h2 style={{ padding: "1em" }}>Please Sign Up</h2>
             <div className="mb-3">
               <input

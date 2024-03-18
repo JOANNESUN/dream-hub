@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,6 +12,16 @@ export default function Login(props) {
   });
   const [error, setError] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    props.sendDataToParent(isAuth);
+  }, [isAuth]);
+
+  useEffect(() => {
+    props.sendUserToParent(userName);
+  }, [userName]);
 
   function handleChange(e) {
     setInputField({ ...inputField, [e.target.name]: e.target.value });
@@ -55,12 +65,16 @@ export default function Login(props) {
       })
         .then((res) => res.json())
         .then((data) => {
-          localStorage.setItem('token', data.token);
-          setSubmitted(true);
+          console.log(data.token)
           toast.success("You have login successfully", {
             position: "top-left",
             autoClose: 3000,
           });
+          console.log("login success");
+          localStorage.setItem("token", data.token);
+          setUserName(data.username);
+          setSubmitted(true);
+          setIsAuth(true);
         })
         .catch((error) => {
           toast.error("Error!", {
@@ -72,34 +86,42 @@ export default function Login(props) {
   }
 
   return (
-    <>{submitted ? (<div>            <ToastContainer style={{ marginTop: "3em" }}/></div>): (
-      <Modal show={showModal} onClose={props.closeModal}>
-      <form className="form-center-container" onSubmit={handleSubmit}>
-        <h2 style={{ padding: "1em" }}>Please login</h2>
-        <div className="mb-3">
-          <input
-            type="email"
-            name="email"
-            value={inputField.email}
-            className="form-control"
-            placeholder="Enter email"
-            onChange={handleChange}
-          />
-          {error.email && <div className="error">{error.email}</div>}
-        </div>
-        <div className="mb-3">
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={inputField.password}
-            placeholder="Enter password"
-            onChange={handleChange}
-          />
-          {error.password && <div className="error">{error.password}</div>}
-        </div>
-        {/* implement remember me later */}
-        {/* <div className="mb-3">
+    <>
+      {submitted ? (
+        <ToastContainer style={{ marginTop: "3em" }} />
+      ) : (
+        <>
+          <Modal show={showModal} onClose={props.closeModal}>
+            <form className="form-center-container" onSubmit={handleSubmit}
+            autoComplete="off">
+              <h2 style={{ padding: "1em" }}>Please login</h2>
+              <div className="mb-3">
+                <input
+                  type="email"
+                  name="email"
+                  value={inputField.email}
+                  className="form-control"
+                  placeholder="Enter email"
+                  onChange={handleChange}
+                />
+                {error.email && <div className="error">{error.email}</div>}
+              </div>
+              <div className="mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={inputField.password}
+                  placeholder="Enter password"
+                  onChange={handleChange}
+                  autoComplete="current-password"
+                />
+                {error.password && (
+                  <div className="error">{error.password}</div>
+                )}
+              </div>
+              {/* implement remember me later */}
+              {/* <div className="mb-3">
           <div className="custom-control custom-checkbox">
             <input
               type="checkbox"
@@ -111,22 +133,23 @@ export default function Login(props) {
             </label>
           </div>
         </div> */}
-        <div className="d-grid">
-          <button
-            type="submit"
-            className="video-game-button"
-            style={{ marginTop: "1.5em" }}
-          >
-            Submit
-          </button>
-        </div>
-        {/* implement forgot password later */}
-        {/* <p className="forgot-password text-right" style={{marginTop: "3em"}}>
+              <div className="d-grid">
+                <button
+                  type="submit"
+                  className="video-game-button"
+                  style={{ marginTop: "1.5em" }}
+                >
+                  Submit
+                </button>
+              </div>
+              {/* implement forgot password later */}
+              {/* <p className="forgot-password text-right" style={{marginTop: "3em"}}>
         <a href="#" style={{color: "black"}}> Forgot password?</a>
         </p> */}
-      </form>
-    </Modal>
-    )} 
+            </form>
+          </Modal>
+        </>
+      )}
     </>
   );
 }

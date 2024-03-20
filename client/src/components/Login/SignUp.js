@@ -97,6 +97,7 @@ export default function SignUp(props) {
 
   return (
     <>
+      <ToastContainer style={{ marginTop: "3em" }} />
       {submitted ? (
         <div>
           {" "}

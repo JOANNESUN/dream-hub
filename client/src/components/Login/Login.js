@@ -3,6 +3,7 @@ import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios';
 
 export default function Login(props) {
   const [showModal, setShowModal] = useState(true);
@@ -52,33 +53,29 @@ export default function Login(props) {
     return isValid;
   }
 
-  function handleSubmit(e) {
+ const handleSubmit = (e) => {
     e.preventDefault();
     if (validation()) {
       const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/login`;
-      fetch(apiUrl, {
-        method: "POST",
+      axios.post(apiUrl, inputField, {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(inputField),
       })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data.token)
+        .then((response) => {
           toast.success("You have login successfully", {
-            position: "top-left",
+            position: "top-center",
             autoClose: 3000,
           });
-          console.log("login success");
-          localStorage.setItem("token", data.token);
-          setUserName(data.username);
+          localStorage.setItem("token", response.data.token);
+          setUserName(response.data.username);
           setSubmitted(true);
           setIsAuth(true);
         })
         .catch((error) => {
-          toast.error("Error!", {
-            position: "top-left",
+          console.log("error", error.response.data);
+          toast.error(error.response.data || "Error!", {
+            position: "top-center",
             autoClose: 3000,
           });
         });
@@ -87,6 +84,7 @@ export default function Login(props) {
 
   return (
     <>
+      <ToastContainer style={{ marginTop: "3em" }} />
       {submitted ? (
         <ToastContainer style={{ marginTop: "3em" }} />
       ) : (

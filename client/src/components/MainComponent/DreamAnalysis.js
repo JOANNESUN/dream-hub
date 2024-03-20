@@ -8,6 +8,8 @@ function DreamAnalysis({
   dataFromDreamInput,
   dataFromDreamResponse,
   loadingStatus,
+  loginStatus,
+  signupStatus
 }) {
   const [responseData, setResponseData] = useState(dataFromDreamResponse);
   const [inputData, setInputData] = useState(dataFromDreamInput);
@@ -27,6 +29,11 @@ function DreamAnalysis({
   }, [dataFromDreamInput]);
 
   function handleSave() {
+
+    if (!loginStatus) {
+      alert('Please login or sign up first');
+      return;
+    }
     const dream = inputData;
     const currentDate = new Date().toISOString().slice(0, 10);
     const analysis = responseData;

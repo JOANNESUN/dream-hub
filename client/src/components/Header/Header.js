@@ -8,7 +8,7 @@ import Logout from "../Login/Logout.js";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-function Header() {
+function Header(props) {
   const [currentDate, setCurrentDate] = useState(getDate());
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -29,7 +29,9 @@ function Header() {
   function handleLoginStatus(data) {
     console.log("data from login", data);
     setLoginStatus(data);
+    props.handleLoginStatus(data);
   }
+
 
   useEffect(() => {
     const showLogoutSuccessToast = localStorage.getItem("showLogoutSuccessToast");
@@ -44,6 +46,7 @@ function Header() {
 
   function handleLogoutStatus(data) {
     setLogoutStatue(data);
+    props.handleSignUpStatus(data);
     setIsLoginModalOpen(false);
     setIsSignupModalOpen(false);
     //setUserName("");
@@ -66,9 +69,6 @@ function Header() {
   // if login, hide signup and show logout and journal
   // if signup, show logout and journal
   // if logout, hide journal and show login
-
-  console.log("loginStatus in header", loginStatus);
-  console.log("userName", userName)
 
   return (
     <>

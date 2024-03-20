@@ -13,6 +13,8 @@ function App() {
   const [loader, setLoader] = useState(false);
   const [inputData, setInputData] = useState("");
   const [responseData, setResponseData] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
 
   function handleUpdateInput(inputDataFromChild) {
     setInputData(inputDataFromChild);
@@ -26,10 +28,18 @@ function App() {
     setLoader(loadingStatus);
   }
 
+  function handleLoginStatus(status){
+    setIsLogin(status);
+  }
+
+  function handleSignUpStatus (status){
+    setIsSignup(status);
+  }
+
   return (
     <div>
       <BrowserRouter basename="/">
-        <Header />
+      <Header handleLoginStatus={handleLoginStatus} handleSignUpStatus={handleSignUpStatus}/>
         <div className="container">
           <Routes>
             <Route
@@ -46,6 +56,7 @@ function App() {
                       dataFromDreamInput={inputData}
                       dataFromDreamResponse={responseData}
                       loadingStatus={loader}
+                      loginStatus={isLogin}
                     />
                   </div>
                 </>

@@ -1,8 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "./DreamTable.css";
-import getDate from "../../helper/date";
 import { useTable } from "react-table";
-import { DreamTableLabel } from "./DreamTableLabel";
 import "../Logo/Logo.css";
 
 function DreamTable() {
@@ -49,10 +47,8 @@ function DreamTable() {
     useTable({ columns, data });
 
   return (
+    <div>
     <div
-      style={{
-        background: rows.length < 0 ? "white" : "black",
-      }}
       className="dream-table-container"
     >
       {rows.length > 0 ? (
@@ -84,10 +80,11 @@ function DreamTable() {
           </tbody>
         </table>
       ) : (
-        <div style={{color: "white" }}>
+        <div style={{color: "black" }}>
           <h1>No Journal Yet</h1>
         </div>
       )}
+    </div>
     </div>
   );
 }

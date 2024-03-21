@@ -3,6 +3,7 @@ import Loader from "../Loader/Loader";
 import StaticLoader from "../StaticLoader/StaticLoader";
 import { useNavigate } from "react-router-dom";
 import getDate from "../../helper/date";
+import "./MainComponent.css";
 
 function DreamAnalysis({
   dataFromDreamInput,
@@ -74,7 +75,7 @@ function DreamAnalysis({
         <>
           <textarea
             readOnly
-            className="interpretationField"
+            className="dream-interpretation-box"
             value={responseData}
           ></textarea>
           <button

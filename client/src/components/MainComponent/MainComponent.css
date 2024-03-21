@@ -1,0 +1,78 @@
+.input-component-container {
+  padding: 20px;
+  border-radius: 10%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputField {
+  width: 90%;
+  min-height: 10em;
+  padding: 1em 2em 2em 2em;
+  margin: 1em 1em 2em 1em;
+}
+
+.inputField:focus {
+  border: 0 none #fff;
+  overflow: hidden;
+  outline: none;
+}
+
+.errorMsg {
+  margin-top: -2em;
+  font-size: 12px;
+  color: red;
+  font-weight: 600;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.wordCount {
+  font-size: 12px;
+  color: #39393a;
+  position: absolute; /* Add this line */
+  top: 0; /* Adjust as needed to move down from the top */
+  right: 0;
+  margin-right: 3em;
+}
+
+.dream-interpretation-box {
+  width: 80%;
+  padding: 2em 2em 2em 2em;
+  margin: -2em 4em 2em 4em;
+  height: 20em;
+}
+
+.dream-interpretation-box:focus {
+  border: 0 none;
+  outline: none;
+}
+
+@media (max-width: 800px) {
+  .inputWrapper {
+    position: relative;
+    margin-top: 1em;
+  }
+
+  .inputField {
+    width: 90%;
+    padding: 1em 1em 2em 1em;
+    margin: 1em 1em 2em 2em;
+    min-height: 1em;
+  }
+
+  .dream-interpretation-box {
+    width: 80%;
+    padding: 0;
+    margin: 0;
+    max-height: 70%;
+  }
+}

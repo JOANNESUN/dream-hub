@@ -6,8 +6,6 @@
   max-height: 500px; /* Adjust based on your needs */
   overflow-y: auto; /* Enables vertical scrolling */
   width: 100%;
-  border-radius: 1em;
-  margin: 3em 5em 2em 2em;
 }
 
 .dream-table {
@@ -20,7 +18,7 @@
 }
 
 .dream-table thead tr {
-  background-color: #b8e1de;
+  background-color: #fd916d;
   color: #434343;
   text-align: center;
   height: 4em;

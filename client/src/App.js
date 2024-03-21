@@ -28,30 +28,35 @@ function App() {
     setLoader(loadingStatus);
   }
 
-  function handleLoginStatus(status){
+  function handleLoginStatus(status) {
     setIsLogin(status);
   }
 
-  function handleSignUpStatus (status){
+  function handleSignUpStatus(status) {
     setIsSignup(status);
   }
 
   return (
     <div>
       <BrowserRouter basename="/">
-      <Header handleLoginStatus={handleLoginStatus} handleSignUpStatus={handleSignUpStatus}/>
+        <Header
+          handleLoginStatus={handleLoginStatus}
+          handleSignUpStatus={handleSignUpStatus}
+        />
         <div className="container">
           <Routes>
             <Route
               path="/"
               element={
                 <>
-                  <DreamInputField
-                    handleUpdateInput={handleUpdateInput}
-                    handleResponseData={handleResponseData}
-                    handleLoadingStatus={handleLoadingStatus}
-                  />
-                  <div>
+                  <div className="dream-input">
+                    <DreamInputField
+                      handleUpdateInput={handleUpdateInput}
+                      handleResponseData={handleResponseData}
+                      handleLoadingStatus={handleLoadingStatus}
+                    />
+                  </div>
+                  <div className="dream-analysis">
                     <DreamAnalysis
                       dataFromDreamInput={inputData}
                       dataFromDreamResponse={responseData}
@@ -65,10 +70,12 @@ function App() {
             <Route
               path="/journal"
               element={
-                <DreamTable
-                  dataFromDreamInput={inputData}
-                  dataFromDreamResponse={responseData}
-                />
+                <div className="dream-table-component">
+                  <DreamTable
+                    dataFromDreamInput={inputData}
+                    dataFromDreamResponse={responseData}
+                  />
+                </div>
               }
             />
           </Routes>

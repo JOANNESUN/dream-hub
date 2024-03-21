@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../../App.css";
+import "./MainComponent.css";
 
 function DreamInputField({
   handleUpdateInput,
@@ -64,11 +65,11 @@ function DreamInputField({
 
   return (
     <>
-      <form className="mainColumns" onSubmit={handleSubmit}>
-        <h1 className="oxygenBold">
+      <form className="input-component-container" onSubmit={handleSubmit}>
+        <span className="oxygenBold">
           Share your dream here, and we'll unveil deeper meanings and insights
           hidden within.
-        </h1>
+        </span>
 
         <div className="inputWrapper">
           <textarea

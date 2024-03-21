@@ -47,7 +47,6 @@ function DreamTable() {
     useTable({ columns, data });
 
   return (
-    <div>
     <div
       className="dream-table-container"
     >
@@ -84,7 +83,6 @@ function DreamTable() {
           <h1>No Journal Yet</h1>
         </div>
       )}
-    </div>
     </div>
   );
 }

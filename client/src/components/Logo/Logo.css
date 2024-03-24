@@ -9,12 +9,13 @@
   }
   
   .typewriter {
-      width: 5ch;
+      /* width: 5ch; */
       white-space: nowrap;
-      overflow: hidden;
+      /* overflow: hidden;
       border-right: 2px solid #fcfafa;
       animation: cursor 1s step-start infinite, 
-      text 4s steps(20) alternate infinite;
+      text 4s steps(20) alternate infinite; */
+      animation: none !important; 
   }
   
   @keyframes cursor {
@@ -30,4 +31,25 @@
       100% { 
       width: 10ch; 
     }
+  }
+
+  .logoImage{
+    margin-left: 0.5em;
+    padding-right: 1em;
+    height: auto;
+    padding-top:2em;
+  }
+
+  @media screen and (max-width: 768px) {
+    .typewriter {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .logoImage{
+      width: 2.5em !important;
+      padding-top:4px;
+      margin-left:-1em;
+    }
+  
   }

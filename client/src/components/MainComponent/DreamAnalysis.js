@@ -2,8 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import Loader from "../Loader/Loader";
 import StaticLoader from "../StaticLoader/StaticLoader";
 import { useNavigate } from "react-router-dom";
-import getDate from "../../helper/date";
 import "./MainComponent.css";
+import { useSelector } from 'react-redux';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function DreamAnalysis({
   dataFromDreamInput,
@@ -14,13 +16,18 @@ function DreamAnalysis({
 }) {
   const [responseData, setResponseData] = useState(dataFromDreamResponse);
   const [inputData, setInputData] = useState(dataFromDreamInput);
+  const [login, setLogin] = useState(loginStatus);
   let navigate = useNavigate();
+  const userLoginStatus = useSelector(state => state.loginStatus.userLoginStatus);
+
+  console.log("userLoginStatus from DreamAnalysis", userLoginStatus);
 
   useEffect(() => {
     // Update responseData when dataFromDreamResponse changes
     setResponseData(dataFromDreamResponse);
     setInputData(dataFromDreamInput);
-  }, [dataFromDreamResponse, dataFromDreamInput]);
+    setLogin(loginStatus);
+  }, [dataFromDreamResponse, dataFromDreamInput, loginStatus]);
 
   useEffect(() => {
     if (!dataFromDreamInput) {
@@ -31,8 +38,11 @@ function DreamAnalysis({
 
   function handleSave() {
 
-    if (!loginStatus) {
-      alert('Please login or sign up first');
+    if (!userLoginStatus) {
+      toast.error("please login or sign up first", {
+        position: "top-center",
+        autoClose: 3000,
+      });
       return;
     }
     const dream = inputData;
@@ -67,6 +77,9 @@ function DreamAnalysis({
       });
   }
 
+console.log(loadingStatus);
+
+
   return (
     <>
       {!loadingStatus && !responseData && <StaticLoader />}
@@ -78,6 +91,7 @@ function DreamAnalysis({
             className="dream-interpretation-box"
             value={responseData}
           ></textarea>
+          <ToastContainer />
           <button
             className="video-game-button"
             type="submit"

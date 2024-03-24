@@ -159,3 +159,15 @@
 .logout-button:focus:not(:focus-visible) {
   outline: 0;
 }
+
+
+@media screen and (max-width: 768px) {
+  .video-game-button{
+    font-size: 14px;
+  }
+
+  .logout-button{
+    font-size: 14px;
+  }
+
+}

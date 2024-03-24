@@ -2,9 +2,12 @@ import React, { useState, useMemo, useEffect } from "react";
 import "./DreamTable.css";
 import { useTable } from "react-table";
 import "../Logo/Logo.css";
+import { useSelector, useDispatch } from 'react-redux';
+import { dreamKeyWords } from '../../store/UserDreamKeyWordSlice';
 
 function DreamTable() {
   const [responseData, setResponseData] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/fetch-journal`;
@@ -22,6 +25,12 @@ function DreamTable() {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  useEffect(() => {
+    const dreams = responseData.map(item => item.dream); // Extracting all the 'dream' values
+    const combinedDreams = dreams.join(" "); // Combining all the 'dream' values into a single string separated by spaces
+    dispatch(dreamKeyWords(combinedDreams));
+  }, [responseData, dispatch]);
 
   const columns = useMemo(
     () => [
@@ -43,7 +52,7 @@ function DreamTable() {
 
   const data = useMemo(() => responseData, [responseData]);
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
   return (

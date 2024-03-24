@@ -15,7 +15,7 @@ function DreamInputField({
 
   function handleSubmit(e) {
     e.preventDefault();
-    const wordCount = (inputQuery.trim().split(/\s+/).length) - 1;
+    const wordCount = (inputQuery.trim().split(/\s+/).length);
 
     if (wordCount < 5 || wordCount > 30) {
       setErrorMsg(

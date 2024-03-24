@@ -4,8 +4,12 @@ import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginStatus } from '../../store/UserStatusSlice';
 
 export default function Login(props) {
+  const userStatus = useSelector((state) => state.loginStatus.userLoginStatus);
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(true);
   const [inputField, setInputField] = useState({
     email: "",
@@ -71,6 +75,8 @@ export default function Login(props) {
           setUserName(response.data.username);
           setSubmitted(true);
           setIsAuth(true);
+
+          dispatch(loginStatus(true));
         })
         .catch((error) => {
           console.log("error", error.response.data);
@@ -81,6 +87,8 @@ export default function Login(props) {
         });
     }
   }
+
+  console.log("userStatus from redux:::", userStatus)
 
   return (
     <>

@@ -99,7 +99,7 @@ function Header(props) {
               <button
                 onClick={toggleSignupModal}
                 className="video-game-button"
-                style={{ marginRight: "1.5em" }}
+                // style={{ marginRight: "1.5em" }}
               >
                 Sign up
               </button>

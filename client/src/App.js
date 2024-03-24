@@ -8,6 +8,7 @@ import DreamInputField from "./components/MainComponent/DreamInputField";
 import DreamAnalysis from "./components/MainComponent/DreamAnalysis";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import DreamTable from "./components/DreamTable/DreamTable";
+import UserProfile from "./components/UserProfile/UserProfile";
 
 function App() {
   const [loader, setLoader] = useState(false);
@@ -70,12 +71,17 @@ function App() {
             <Route
               path="/journal"
               element={
+                <>
+                <div className="user-profile">
+                  <UserProfile />
+                </div>
                 <div className="dream-table-component">
                   <DreamTable
                     dataFromDreamInput={inputData}
                     dataFromDreamResponse={responseData}
                   />
                 </div>
+                </>
               }
             />
           </Routes>

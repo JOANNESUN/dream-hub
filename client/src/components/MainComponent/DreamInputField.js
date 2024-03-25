@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "../../App.css";
 import "./MainComponent.css";
 
@@ -57,12 +57,6 @@ function DreamInputField({
       setResponse("");
     }
   }
-
-  function clearInputField() {
-    setResponse("");
-    setWordCount(0);
-  }
-
   return (
     <>
       <form className="input-component-container" onSubmit={handleSubmit}>

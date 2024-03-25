@@ -19,11 +19,11 @@ function DreamAnalysis({
   const [login, setLogin] = useState(loginStatus);
   let navigate = useNavigate();
   const userLoginStatus = useSelector(
-    (state) => state.loginStatus.userLoginStatus
+    (state) => state.auth.userLoginStatus
   );
   const toastId = useRef(null);
 
-  console.log("userLoginStatus from DreamAnalysis", userLoginStatus);
+  console.log("dream analysis userStatus from redux:::", userLoginStatus);
 
   useEffect(() => {
     // Update responseData when dataFromDreamResponse changes

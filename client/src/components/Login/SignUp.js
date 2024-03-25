@@ -3,6 +3,8 @@ import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { updateSignupStatus } from "../../store/UserStatusSlice";
 
 export default function SignUp(props) {
   const [showModal, setShowModal] = useState(true);
@@ -12,13 +14,8 @@ export default function SignUp(props) {
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const [isSignout, setIsSignout] = useState(false);
   const toastId = useRef(null);
-
-  useEffect(() => {
-    props.sendDataToParent(isSignout);
-  }, [isSignout]);
+  const dispatch = useDispatch();
 
   function handleChange(e) {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
@@ -33,7 +30,7 @@ export default function SignUp(props) {
     if (!formInput.name) {
       newErrors.name = "Name is required";
       isValid = false;
-    } else if (formInput.name.length < 3 || formInput.name.length > 20) {
+    } else if (formInput.name.trim().length < 3 || formInput.name.trim().length > 20) {
       newErrors.name = "Name length: 3-20 letters";
       isValid = false;
     } else if (!/^[a-zA-Z\s]+$/.test(formInput.name)) {
@@ -78,8 +75,7 @@ export default function SignUp(props) {
       })
         .then((res) => res.json())
         .then((data) => {
-          setSubmitted(true);
-          setIsSignout(true);
+          dispatch(updateSignupStatus(true));
           toast.success("You have sign up successfully", {
             position: "top-left",
             autoClose: 3000,
@@ -99,12 +95,6 @@ export default function SignUp(props) {
   return (
     <>
       <ToastContainer style={{ marginTop: "3em" }} />
-      {submitted ? (
-        <div>
-          {" "}
-          <ToastContainer style={{ marginTop: "3em" }} />
-        </div>
-      ) : (
         <Modal show={showModal} onClose={props.closeModal}>
           <form
             className="form-center-container"
@@ -161,7 +151,6 @@ export default function SignUp(props) {
             </div>
           </form>
         </Modal>
-      )}
     </>
   );
 }

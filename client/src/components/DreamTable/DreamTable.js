@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import "./DreamTable.css";
 import { useTable } from "react-table";
 import "../Logo/Logo.css";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { dreamKeyWords } from '../../store/UserDreamKeyWordSlice';
 
 function DreamTable() {

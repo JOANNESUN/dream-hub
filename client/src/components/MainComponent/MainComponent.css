@@ -12,7 +12,7 @@
   width: 90%;
   min-height: 10em;
   padding: 1em 2em 2em 2em;
-  margin: 1em 1em 2em 1em;
+  margin: 1.5em 1em 2em 1em;
 }
 
 .inputField:focus {
@@ -31,7 +31,7 @@
 .inputWrapper {
   position: relative;
   width: 100%;
-  margin-top: 2em;
+  margin-top: 4em;
   margin-bottom: 2em;
 }
 
@@ -65,8 +65,7 @@
   .inputField {
     width: 90%;
     padding: 1em 1em 2em 1em;
-    margin: 1em 1em 2em 2em;
-    min-height: 1em;
+    margin: 1.5em 1em 2em 2em;
   }
 
   .dream-interpretation-box {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,6 +7,7 @@ import Spinner from "../Spinner/Spinner";
 function Logout(props) {
   const [isLogout, setIsLogout] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const toastId = useRef(null);
   const token = localStorage.getItem("token");
   const handleLogout = async () => {
     setIsLoading(true);
@@ -35,10 +36,12 @@ function Logout(props) {
         });
       } else {
         setIsLoading(false);
-        toast.error("Error!", {
-          position: "top-left",
-          autoClose: 2200,
-        });
+        if(!toast.isActive(toastId.current)){
+          toastId.current = toast.error("Error!", {
+            position: "top-left",
+            autoClose: 2200,
+          });
+        }
       }
     } catch (error) {
       console.error("Logout failed", error);

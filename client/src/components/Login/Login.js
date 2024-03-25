@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { loginStatus } from '../../store/UserStatusSlice';
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { loginStatus } from "../../store/UserStatusSlice";
 
 export default function Login(props) {
   const userStatus = useSelector((state) => state.loginStatus.userLoginStatus);
@@ -19,6 +19,7 @@ export default function Login(props) {
   const [submitted, setSubmitted] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [userName, setUserName] = useState("");
+  const toastId = useRef(null);
 
   useEffect(() => {
     props.sendDataToParent(isAuth);
@@ -57,15 +58,16 @@ export default function Login(props) {
     return isValid;
   }
 
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (validation()) {
       const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/login`;
-      axios.post(apiUrl, inputField, {
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
+      axios
+        .post(apiUrl, inputField, {
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
         .then((response) => {
           toast.success("You have login successfully", {
             position: "top-center",
@@ -80,15 +82,17 @@ export default function Login(props) {
         })
         .catch((error) => {
           console.log("error", error.response.data);
-          toast.error(error.response.data || "Error!", {
-            position: "top-center",
-            autoClose: 3000,
-          });
+          if (!toast.isActive(toastId.current)) {
+            toastId.current = toast.error(error.response.data || "Error!", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+          }
         });
     }
-  }
+  };
 
-  console.log("userStatus from redux:::", userStatus)
+  console.log("userStatus from redux:::", userStatus);
 
   return (
     <>
@@ -98,8 +102,11 @@ export default function Login(props) {
       ) : (
         <>
           <Modal show={showModal} onClose={props.closeModal}>
-            <form className="form-center-container" onSubmit={handleSubmit}
-            autoComplete="off">
+            <form
+              className="form-center-container"
+              onSubmit={handleSubmit}
+              autoComplete="off"
+            >
               <h2 style={{ padding: "1em" }}>Please login</h2>
               <div className="mb-3">
                 <input

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "../Modal/ModalComponent";
 import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,10 +14,11 @@ export default function SignUp(props) {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [isSignout, setIsSignout] = useState(false);
+  const toastId = useRef(null);
 
-  useEffect(()=>{
-    props.sendDataToParent(isSignout)
-  }, [isSignout])
+  useEffect(() => {
+    props.sendDataToParent(isSignout);
+  }, [isSignout]);
 
   function handleChange(e) {
     setFormInput({ ...formInput, [e.target.name]: e.target.value });
@@ -85,15 +86,15 @@ export default function SignUp(props) {
           });
         })
         .catch((error) => {
-          console.log("error:", error);
-          toast.error("Error!", {
-            position: "top-left",
-            autoClose: 3000,
-          });
+          if (!toast.isActive(toastId.current)) {
+            toastId.current = toast.error("Error!", {
+              position: "top-left",
+              autoClose: 3000,
+            });
+          }
         });
     }
   }
-
 
   return (
     <>
@@ -105,7 +106,11 @@ export default function SignUp(props) {
         </div>
       ) : (
         <Modal show={showModal} onClose={props.closeModal}>
-          <form className="form-center-container" onSubmit={handleSubmit} autoComplete="off">
+          <form
+            className="form-center-container"
+            onSubmit={handleSubmit}
+            autoComplete="off"
+          >
             <h2 style={{ padding: "1em" }}>Please Sign Up</h2>
             <div className="mb-3">
               <input

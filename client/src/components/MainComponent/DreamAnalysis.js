@@ -3,7 +3,7 @@ import Loader from "../Loader/Loader";
 import StaticLoader from "../StaticLoader/StaticLoader";
 import { useNavigate } from "react-router-dom";
 import "./MainComponent.css";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,13 +12,16 @@ function DreamAnalysis({
   dataFromDreamResponse,
   loadingStatus,
   loginStatus,
-  signupStatus
+  signupStatus,
 }) {
   const [responseData, setResponseData] = useState(dataFromDreamResponse);
   const [inputData, setInputData] = useState(dataFromDreamInput);
   const [login, setLogin] = useState(loginStatus);
   let navigate = useNavigate();
-  const userLoginStatus = useSelector(state => state.loginStatus.userLoginStatus);
+  const userLoginStatus = useSelector(
+    (state) => state.loginStatus.userLoginStatus
+  );
+  const toastId = useRef(null);
 
   console.log("userLoginStatus from DreamAnalysis", userLoginStatus);
 
@@ -37,19 +40,20 @@ function DreamAnalysis({
   }, [dataFromDreamInput]);
 
   function handleSave() {
-
     if (!userLoginStatus) {
-      toast.error("please login or sign up first", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      if (!toast.isActive(toastId.current)) {
+        toastId.current = toast.error("please login or sign up first", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      }
       return;
     }
     const dream = inputData;
     const currentDate = new Date().toISOString().slice(0, 10);
     const analysis = responseData;
     const token = localStorage.getItem("token");
-    console.log(token)
+    console.log(token);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/save-journal`, {
       method: "POST",
       headers: {
@@ -77,8 +81,7 @@ function DreamAnalysis({
       });
   }
 
-console.log(loadingStatus);
-
+  console.log(loadingStatus);
 
   return (
     <>

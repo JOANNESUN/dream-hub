@@ -58,7 +58,6 @@ function Header(props) {
     <>
       <div className="header">
         <div className="header-left">
-          <ul>{currentDate}</ul>
           <Link to={"/"}>
             <Logo username={userName} />
           </Link>

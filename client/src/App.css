@@ -24,8 +24,9 @@ body {
 
 .oxygenRegular {
   font-family: "Oxygen", sans-serif;
-  font-weight: 400;
+  font-weight: 900;
   color: white;
+  font-size: 1em;
 }
 
 .oxygenBold {

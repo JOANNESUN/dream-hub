@@ -29,7 +29,6 @@ app.post('/logout', (req, res) => {
 
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
   const { name, email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,7 +43,6 @@ app.post("/signup", async (req, res) => {
       email,
       hashedPassword,
     ]);
-    console.log("Signup success", results);
     res
       .status(201)
       .send({ message: "Signup successful", userId: results.insertId, username: results.name });

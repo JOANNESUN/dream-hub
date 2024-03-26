@@ -14,15 +14,6 @@ let database_connection = mysql.createPool({
 }).promise();
 
 
-// async function fetchNotes() {
-//   try {
-//     const result = await database_connection.query("SELECT * FROM journal");
-//     console.log(result);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
 // keep this to test if mysql database is connected with node
 async function getJournalWithId(id){
   

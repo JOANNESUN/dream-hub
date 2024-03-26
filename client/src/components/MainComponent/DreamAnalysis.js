@@ -21,9 +21,9 @@ function DreamAnalysis({
   const userLoginStatus = useSelector(
     (state) => state.auth.userLoginStatus
   );
+  const isUserSignup = useSelector((state) => state.auth.userSignupStatus);
   const toastId = useRef(null);
 
-  console.log("dream analysis userStatus from redux:::", userLoginStatus);
 
   useEffect(() => {
     // Update responseData when dataFromDreamResponse changes
@@ -40,7 +40,7 @@ function DreamAnalysis({
   }, [dataFromDreamInput]);
 
   function handleSave() {
-    if (!userLoginStatus) {
+    if (!userLoginStatus && !isUserSignup) {
       if (!toast.isActive(toastId.current)) {
         toastId.current = toast.error("please login or sign up first", {
           position: "top-center",
@@ -53,7 +53,6 @@ function DreamAnalysis({
     const currentDate = new Date().toISOString().slice(0, 10);
     const analysis = responseData;
     const token = localStorage.getItem("token");
-    console.log(token);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/save-journal`, {
       method: "POST",
       headers: {
@@ -73,15 +72,12 @@ function DreamAnalysis({
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         navigate("/journal");
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }
-
-  console.log(loadingStatus);
 
   return (
     <>

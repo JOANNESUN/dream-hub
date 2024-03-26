@@ -5,22 +5,22 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { updateLoginStatus } from "../../store/UserStatusSlice"; // this is for redux dispatch
+import { updateLoginStatus } from "../../store/UserStatusSlice"; 
+import { setUserName } from "../../store/UserNameSlice";
+
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login(props) {
   const dispatch = useDispatch();
+  
   const [showModal, setShowModal] = useState(true);
   const [inputField, setInputField] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState({});
-  const [userName, setUserName] = useState("");
   const toastId = useRef(null);
-
-  useEffect(() => {
-    props.sendUserToParent(userName);
-  }, [userName]);
 
   function handleChange(e) {
     setInputField({ ...inputField, [e.target.name]: e.target.value });
@@ -63,22 +63,58 @@ export default function Login(props) {
         })
         .then((response) => {
           localStorage.setItem("token", response.data.token);
-          setUserName(response.data.username);
+          dispatch(setUserName(response.data.username));
           dispatch(updateLoginStatus(true));
-            toast.success("You have login successfully", {
-              position: "top-center",
-              autoClose: 3000,
-            });
+          toast.success("You have login successfully", {
+            position: "top-center",
+            autoClose: 3000,
+          });
         })
         .catch((error) => {
-          console.log("error", error.response.data);
+          let errorMessage = "Error!"; // Default error message
+          if (error.response && error.response.data) {
+            errorMessage = error.response.data;
+          }
           if (!toast.isActive(toastId.current)) {
-            toastId.current = toast.error(error.response.data || "Error!", {
+            toastId.current = toast.error(errorMessage, {
               position: "top-center",
               autoClose: 3000,
             });
           }
         });
+    }
+  };
+
+  const responseMessage = (response) => {
+    if (response) {
+      let userObject;
+      try {
+        // Perform actions based on decoded information
+        userObject = jwtDecode(response.credential);
+        dispatch(setUserName(userObject.name));
+        // dispatch the state to redux
+        dispatch(updateLoginStatus(true));
+
+        localStorage.setItem("userName", userObject.name);
+        localStorage.setItem("userEmail", userObject.email);
+        // Display success toast
+        toast.success("You have logged in successfully with Google", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      } catch (error) {
+        console.error("Error decoding the JWT token:", error);
+        // Display error toast or handle the error as needed
+        if (!toast.isActive(toastId.current)) {
+          toastId.current = toast.error(
+            "Failed to login with Google. Please try again.",
+            {
+              position: "top-center",
+              autoClose: 3000,
+            }
+          );
+        }
+      }
     }
   };
 
@@ -91,7 +127,7 @@ export default function Login(props) {
           onSubmit={handleSubmit}
           autoComplete="off"
         >
-          <h2 style={{ padding: "1em" }}>Please login</h2>
+          <h2 style={{ padding: "0.5em 1em 0 1em" }}>Please login</h2>
           <div className="mb-3">
             <input
               type="email"
@@ -137,6 +173,12 @@ export default function Login(props) {
               Submit
             </button>
           </div>
+          <h2 style={{ margin: "1em" }}>or</h2>
+          <h3>Sign in with Google</h3>
+          <br />
+          <br />
+          <GoogleLogin onSuccess={responseMessage} />
+
           {/* implement forgot password later */}
           {/* <p className="forgot-password text-right" style={{marginTop: "3em"}}>
         <a href="#" style={{color: "black"}}> Forgot password?</a>

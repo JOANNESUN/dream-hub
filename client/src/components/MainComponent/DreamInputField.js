@@ -35,7 +35,6 @@ function DreamInputField({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("frontend res=>", data.reply);
         setResponse(data.reply);
         handleResponseData(data.reply);
         handleLoadingStatus(false);

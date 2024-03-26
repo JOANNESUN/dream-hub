@@ -12,13 +12,11 @@ function DreamTable() {
   useEffect(() => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/fetch-journal`;
     const token = localStorage.getItem("token");
-    console.log("token", token);
     fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched data:", data);
         setResponseData(data);
       })
       .catch((error) => {

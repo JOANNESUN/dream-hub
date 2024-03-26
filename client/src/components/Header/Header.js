@@ -14,7 +14,6 @@ function Header(props) {
   const [currentDate, setCurrentDate] = useState(getDate());
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
-  const [userName, setUserName] = useState("");
   const [logoutStatus, setLogoutStatue] = useState(false);
   const isUserLogin = useSelector((state) => state.auth.userLoginStatus);
   const isUserSignup = useSelector((state) => state.auth.userSignupStatus);
@@ -45,13 +44,6 @@ function Header(props) {
     setLogoutStatue(data);
     setIsLoginModalOpen(false);
     setIsSignupModalOpen(false);
-    if (logoutStatus === true) {
-      setUserName("");
-    }
-  }
-
-  function handleUserName(data) {
-    setUserName(data);
   }
 
   return (
@@ -59,7 +51,7 @@ function Header(props) {
       <div className="header">
         <div className="header-left">
           <Link to={"/"}>
-            <Logo username={userName} />
+            <Logo />
           </Link>
         </div>
         <div className="header-right">
@@ -74,7 +66,6 @@ function Header(props) {
               </button>
               {isLoginModalOpen && (
                 <Login
-                  sendUserToParent={handleUserName}
                   closeModal={toggleLoginModal}
                 />
               )}
@@ -106,7 +97,6 @@ function Header(props) {
           )}
         </div>
       </div>
-      {userName && <div style={{ color: "white" }}>{userName}'s Account </div>}
     </>
   );
 }

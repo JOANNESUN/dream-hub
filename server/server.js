@@ -106,7 +106,7 @@ app.get("/fetch-journal", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    const query = "SELECT * FROM journal WHERE user_id = ? ORDER BY date DESC";
+    const query = "SELECT * FROM journal WHERE user_id = ? ORDER BY id DESC";
 
     const [results] = await database.query(query, [userId]);
     const formattedResults = results.map((item) => ({

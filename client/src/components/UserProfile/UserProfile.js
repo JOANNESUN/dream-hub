@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 export default function UserProfile() {
   const userDreamData = useSelector((state) => state.dreamKeyWords.keywords);
-  console.log("userDreamData in profile", userDreamData);
   useEffect(() => {
     // Create root
     let root = am5.Root.new("wordcloud-container");
@@ -49,7 +48,7 @@ export default function UserProfile() {
       // Clean up
       root.dispose();
     };
-  }, []);
+  }, [userDreamData]);
 
   return (
     <div className="user-container">

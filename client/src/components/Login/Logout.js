@@ -3,12 +3,18 @@ import "./LoginAndSignUp.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../Spinner/Spinner";
+import { googleLogout } from '@react-oauth/google';
+import { useSelector, useDispatch } from "react-redux";
+import { updateLoginStatus } from "../../store/UserStatusSlice";
+import { setUserName } from '../../store/UserNameSlice';
 
 function Logout(props) {
   const [isLogout, setIsLogout] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const toastId = useRef(null);
   const token = localStorage.getItem("token");
+  const isUserLogin = useSelector((state) => state.auth.userLoginStatus);
   const handleLogout = async () => {
     setIsLoading(true);
     try {
@@ -22,12 +28,17 @@ function Logout(props) {
       const data = await response.json();
 
       if (data.success) {
+        localStorage.removeItem("token"); // For traditional auth
+        localStorage.removeItem("userName"); // for google sign in api
+        localStorage.removeItem("userEmail");// for google sign in api
+        setIsLogout(true);
+        googleLogout();
+        dispatch(updateLoginStatus(false));
+        dispatch(setUserName(''));
         toast.success("You have logout successfully", {
           position: "top-right",
           autoClose: 2000,
           onClose: () => {
-            localStorage.removeItem("token");
-            setIsLogout(true);
             setTimeout(() => {
               window.location.href = "/";
             }, 100);
@@ -47,6 +58,8 @@ function Logout(props) {
       console.error("Logout failed", error);
     }
   };
+
+  console.log("isUserLogin from logout", isUserLogin);
 
   useEffect(() => {
     props.sendDataToParent(isLogout);

@@ -18,7 +18,6 @@ function Header(props) {
   const isUserLogin = useSelector((state) => state.auth.userLoginStatus);
   const isUserSignup = useSelector((state) => state.auth.userSignupStatus);
 
-
   function toggleLoginModal() {
     setIsLoginModalOpen(!isLoginModalOpen);
   }

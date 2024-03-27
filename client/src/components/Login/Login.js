@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { updateLoginStatus } from "../../store/UserStatusSlice"; 
+import { updateLoginStatus } from "../../store/UserStatusSlice";
 import { setUserName } from "../../store/UserNameSlice";
 
 import { GoogleLogin } from "@react-oauth/google";
@@ -13,7 +13,7 @@ import { jwtDecode } from "jwt-decode";
 
 export default function Login(props) {
   const dispatch = useDispatch();
-  
+
   const [showModal, setShowModal] = useState(true);
   const [inputField, setInputField] = useState({
     email: "",
@@ -51,6 +51,7 @@ export default function Login(props) {
     return isValid;
   }
 
+  // local jwt login
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validation()) {
@@ -85,26 +86,39 @@ export default function Login(props) {
     }
   };
 
+  // google login
   const responseMessage = (response) => {
     if (response) {
+      console.log(response)
       let userObject;
       try {
         // Perform actions based on decoded information
         userObject = jwtDecode(response.credential);
-        dispatch(setUserName(userObject.name));
-        // dispatch the state to redux
-        dispatch(updateLoginStatus(true));
 
-        localStorage.setItem("userName", userObject.name);
-        localStorage.setItem("userEmail", userObject.email);
-        // Display success toast
-        toast.success("You have logged in successfully with Google", {
-          position: "top-center",
-          autoClose: 3000,
-        });
+        const data = {
+          token: response.credential,
+        };
+
+        const googleSignInUrl = `${process.env.REACT_APP_BACKEND_URL}/googlelogin`;
+
+        axios
+          .post(googleSignInUrl, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            localStorage.setItem("userName", userObject.name);
+            localStorage.setItem("userEmail", userObject.email);
+            dispatch(setUserName(userObject.name));
+            dispatch(updateLoginStatus(true));
+            toast.success("You have logged in successfully with Google", {
+              position: "top-center",
+              autoClose: 3000,
+            });
+          });
       } catch (error) {
         console.error("Error decoding the JWT token:", error);
-        // Display error toast or handle the error as needed
         if (!toast.isActive(toastId.current)) {
           toastId.current = toast.error(
             "Failed to login with Google. Please try again.",

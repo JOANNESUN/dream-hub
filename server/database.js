@@ -32,7 +32,7 @@ async function getJournalWithId(id){
 }
 
 
-getJournalWithId(4);
+//getJournalWithId(4);
 
 
 module.exports = database_connection;

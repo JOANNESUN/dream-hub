@@ -17,7 +17,7 @@
 }
 
 .dream-table thead tr {
-  background-color: #FF6F69;
+  background-color: #d0ffeb;
   color: #434343;
   font-size: 16px;
   text-align: center;
@@ -28,6 +28,7 @@
 .dream-table td {
   padding: 12px 15px;
   text-align: left;
+  border: 1px solid #545454;
 }
 
 .dream-table tbody tr {
@@ -41,6 +42,31 @@
 .dream-table tbody tr:last-of-type {
   border-bottom: 2px solid #323333;
 }
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 30px;
+}
+
+input {
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  width: 91%;
+  padding: 12px 12px;
+  font-family: 'Poppins', sans-serif;
+}
+
+input:hover {
+  background-color: #fffaf3;
+}
+
+input:focus {
+  outline: 1px solid #ccc;
+  border: 1px solid #ccc;
+}
+
 
 /* Responsive table */
 @media screen and (max-width: 600px) {

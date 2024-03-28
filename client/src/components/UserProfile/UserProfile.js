@@ -32,7 +32,7 @@ export default function UserProfile() {
 
     wc.labels.template.setup = function(target) {
       var bg = target.set("background", am5.RoundedRectangle.new(root, {
-        fill: am5.color(0x000000)
+        fill: am5.color(0xFFFFFF)
       }));
       
       bg.states.create("hover", {
@@ -52,7 +52,7 @@ export default function UserProfile() {
 
   return (
     <div className="user-container">
-      <h2 className="label">Key words from your dream journal</h2>
+      <h5 class="label">Key words from your dream</h5>
       <div id="wordcloud-container" style={{ width: "100%", height: "13em" }}></div>
     </div>
   );

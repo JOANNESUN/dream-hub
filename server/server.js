@@ -83,7 +83,6 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/googlelogin", async (req, res) => {
-  console.log("Received /googlelogin request with body:", req.body);
   const { token } = req.body;
 
   try {

@@ -89,12 +89,10 @@ export default function Login(props) {
   // google login
   const responseMessage = (response) => {
     if (response) {
-      console.log(response)
       let userObject;
       try {
         // Perform actions based on decoded information
         userObject = jwtDecode(response.credential);
-
         const data = {
           token: response.credential,
         };
@@ -108,9 +106,11 @@ export default function Login(props) {
             },
           })
           .then((response) => {
+            localStorage.setItem("token", response.data.token);
             localStorage.setItem("userName", userObject.name);
             localStorage.setItem("userEmail", userObject.email);
-            dispatch(setUserName(userObject.name));
+            dispatch(setUserName(userObject.given_name
+              ));
             dispatch(updateLoginStatus(true));
             toast.success("You have logged in successfully with Google", {
               position: "top-center",

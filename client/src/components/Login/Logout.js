@@ -59,7 +59,6 @@ function Logout(props) {
     }
   };
 
-  console.log("isUserLogin from logout", isUserLogin);
 
   useEffect(() => {
     props.sendDataToParent(isLogout);

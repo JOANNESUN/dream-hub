@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 const Logo = () => {
   const getUserName = useSelector((state) => state.userName.getUserName);
+
   return (
     <div className="logo-container">
       <img src={logoImage} alt="Logo" className="logoImage" />

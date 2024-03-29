@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { updateSignupStatus } from "../../store/UserStatusSlice";
+import { setUserName } from "../../store/UserNameSlice";
 
 export default function SignUp(props) {
   const [showModal, setShowModal] = useState(true);
@@ -30,7 +31,10 @@ export default function SignUp(props) {
     if (!formInput.name) {
       newErrors.name = "Name is required";
       isValid = false;
-    } else if (formInput.name.trim().length < 3 || formInput.name.trim().length > 20) {
+    } else if (
+      formInput.name.trim().length < 3 ||
+      formInput.name.trim().length > 20
+    ) {
       newErrors.name = "Name length: 3-20 letters";
       isValid = false;
     } else if (!/^[a-zA-Z\s]+$/.test(formInput.name)) {
@@ -75,11 +79,16 @@ export default function SignUp(props) {
       })
         .then((res) => res.json())
         .then((data) => {
-          dispatch(updateSignupStatus(true));
+          setShowModal(false);
           toast.success("You have sign up successfully", {
             position: "top-left",
             autoClose: 3000,
           });
+
+          setTimeout(() => {
+            dispatch(updateSignupStatus(true));
+            dispatch(setUserName(data.username));
+          }, 3000);
         })
         .catch((error) => {
           if (!toast.isActive(toastId.current)) {
@@ -95,62 +104,60 @@ export default function SignUp(props) {
   return (
     <>
       <ToastContainer style={{ marginTop: "3em" }} />
-        <Modal show={showModal} onClose={props.closeModal}>
-          <form
-            className="form-center-container"
-            onSubmit={handleSubmit}
-            autoComplete="off"
-          >
-            <h2 style={{ padding: "1em" }}>Please Sign Up</h2>
-            <div className="mb-3">
-              <input
-                type="name"
-                name="name"
-                value={formInput.name}
-                className="form-control"
-                placeholder="Enter name"
-                onChange={handleChange}
-                required
-              />
-              {errors.name && <div className="error">{errors.name}</div>}
-            </div>
-            <div className="mb-3">
-              <input
-                type="email"
-                name="email"
-                value={formInput.email}
-                className="form-control"
-                placeholder="Enter email"
-                onChange={handleChange}
-                required
-              />
-              {errors.email && <div className="error">{errors.email}</div>}
-            </div>
-            <div className="mb-3">
-              <input
-                type="password"
-                name="password"
-                value={formInput.password}
-                className="form-control"
-                placeholder="Enter password"
-                onChange={handleChange}
-                required
-              />
-              {errors.password && (
-                <div className="error">{errors.password}</div>
-              )}
-            </div>
-            <div className="d-grid">
-              <button
-                type="submit"
-                className="video-game-button"
-                style={{ marginTop: "8px" }}
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </Modal>
+      <Modal show={showModal} onClose={props.closeModal}>
+        <form
+          className="form-center-container"
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          <h2 style={{ padding: "1em" }}>Please Sign Up</h2>
+          <div className="mb-3">
+            <input
+              type="name"
+              name="name"
+              value={formInput.name}
+              className="form-control"
+              placeholder="Enter name"
+              onChange={handleChange}
+              required
+            />
+            {errors.name && <div className="error">{errors.name}</div>}
+          </div>
+          <div className="mb-3">
+            <input
+              type="email"
+              name="email"
+              value={formInput.email}
+              className="form-control"
+              placeholder="Enter email"
+              onChange={handleChange}
+              required
+            />
+            {errors.email && <div className="error">{errors.email}</div>}
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              name="password"
+              value={formInput.password}
+              className="form-control"
+              placeholder="Enter password"
+              onChange={handleChange}
+              required
+            />
+            {errors.password && <div className="error">{errors.password}</div>}
+          </div>
+          <div className="d-grid">
+            <button
+              type="submit"
+              className="video-game-button"
+              style={{ marginTop: "8px" }}
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

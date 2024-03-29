@@ -47,7 +47,7 @@ app.post("/signup", async (req, res) => {
     res.status(201).send({
       message: "Signup successful",
       userId: results.insertId,
-      username: results.name,
+      username: name,
     });
   } catch (error) {
     console.error("Failed to insert user in database", error);

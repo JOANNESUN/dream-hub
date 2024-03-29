@@ -52,7 +52,7 @@ export default function UserProfile() {
 
   return (
     <div className="user-container">
-      <h5 class="label">Key words from your dream</h5>
+      <div class="label">Key words from your dream</div>
       <div id="wordcloud-container" style={{ width: "100%", height: "13em" }}></div>
     </div>
   );

@@ -64,12 +64,19 @@ export default function Login(props) {
         })
         .then((response) => {
           localStorage.setItem("token", response.data.token);
-          dispatch(setUserName(response.data.username));
-          dispatch(updateLoginStatus(true));
+
+          setShowModal(false);
+
           toast.success("You have login successfully", {
             position: "top-center",
             autoClose: 3000,
           });
+
+          setTimeout(() => {
+            dispatch(setUserName(response.data.username));
+            dispatch(updateLoginStatus(true));
+          }, 3000);
+
         })
         .catch((error) => {
           let errorMessage = "Error!"; // Default error message
@@ -109,13 +116,18 @@ export default function Login(props) {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("userName", userObject.name);
             localStorage.setItem("userEmail", userObject.email);
-            dispatch(setUserName(userObject.given_name
-              ));
-            dispatch(updateLoginStatus(true));
+
+            setShowModal(false);
+
             toast.success("You have logged in successfully with Google", {
               position: "top-center",
               autoClose: 3000,
             });
+
+            setTimeout(() => {
+              dispatch(setUserName(userObject.given_name));
+              dispatch(updateLoginStatus(true));
+            }, 3000);
           });
       } catch (error) {
         console.error("Error decoding the JWT token:", error);

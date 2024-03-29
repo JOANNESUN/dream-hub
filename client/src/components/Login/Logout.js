@@ -31,14 +31,14 @@ function Logout(props) {
         localStorage.removeItem("token"); // For traditional auth
         localStorage.removeItem("userName"); // for google sign in api
         localStorage.removeItem("userEmail");// for google sign in api
-        setIsLogout(true);
-        googleLogout();
-        dispatch(updateLoginStatus(false));
-        dispatch(setUserName(''));
         toast.success("You have logout successfully", {
           position: "top-right",
           autoClose: 2000,
           onClose: () => {
+            setIsLogout(true);
+            googleLogout();
+            dispatch(updateLoginStatus(false));
+            dispatch(setUserName(''));
             setTimeout(() => {
               window.location.href = "/";
             }, 100);

@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../Spinner/Spinner";
 import { googleLogout } from '@react-oauth/google';
 import { useSelector, useDispatch } from "react-redux";
-import { updateLoginStatus } from "../../store/UserStatusSlice";
+import { updateLoginStatus, updateSignupStatus } from "../../store/UserStatusSlice";
 import { setUserName } from '../../store/UserNameSlice';
 
 function Logout(props) {
@@ -14,7 +14,6 @@ function Logout(props) {
   const dispatch = useDispatch();
   const toastId = useRef(null);
   const token = localStorage.getItem("token");
-  const isUserLogin = useSelector((state) => state.auth.userLoginStatus);
   const handleLogout = async () => {
     setIsLoading(true);
     try {
@@ -38,6 +37,7 @@ function Logout(props) {
             setIsLogout(true);
             googleLogout();
             dispatch(updateLoginStatus(false));
+            dispatch(updateSignupStatus(false));
             dispatch(setUserName(''));
             setTimeout(() => {
               window.location.href = "/";
@@ -59,7 +59,7 @@ function Logout(props) {
     }
   };
 
-
+// TODO: sign up => save => journal => logout and this does not work
   useEffect(() => {
     props.sendDataToParent(isLogout);
   }, [isLogout, props.sendDataToParent]);

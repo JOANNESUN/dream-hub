@@ -44,10 +44,17 @@ app.post("/signup", async (req, res) => {
       email,
       hashedPassword,
     ]);
+
+     // Generate a JWT token for the new user
+     const token = jwt.sign({ userId: results.insertId }, jwtSecret, {
+      expiresIn: '24h', // Optionally set an expiration for the token
+    });
+
     res.status(201).send({
       message: "Signup successful",
       userId: results.insertId,
       username: name,
+      token: token,
     });
   } catch (error) {
     console.error("Failed to insert user in database", error);

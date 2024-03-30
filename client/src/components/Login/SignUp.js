@@ -80,6 +80,7 @@ export default function SignUp(props) {
         .then((res) => res.json())
         .then((data) => {
           setShowModal(false);
+          localStorage.setItem("token", data.token);
           toast.success("You have sign up successfully", {
             position: "top-left",
             autoClose: 3000,

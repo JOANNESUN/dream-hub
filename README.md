@@ -1,5 +1,7 @@
 # Dream Analysis and Journaling App - Dream-hub.xyz
-Dream-hub.xyz is a comprehensive platform designed to explore the mysterious world of dreams. By leveraging the power of OpenAI's cutting-edge language model, this app offers users personalized interpretations of their dreams, revealing potential connections to daily events or the deeper desires lurking within their subconscious.
+
+Dream-hub.xyz is a comprehensive platform designed to explore the mysterious world of dreams. 
+By leveraging the power of OpenAI's cutting-edge language model, this app offers users personalized interpretations of their dreams, revealing potential connections to daily events or the deeper desires lurking within their subconscious.
 
 # Key Features:
 
